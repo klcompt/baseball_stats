@@ -11,14 +11,14 @@ describe 'StatLoader' do
   let(:stat) { mock Stat }
 
   before(:each) do
-    Stat.stub(:destroy_all)
+    Stat.stub(:delete_all)
     Player.stub(:find_by_player_key).and_return(player)
     Stat.stub(:new).and_return(stat)
   end
 
   it 'creates new stats from valid data' do
 
-    Stat.should_receive(:destroy_all)
+    Stat.should_receive(:delete_all)
     Player.should_receive(:find_by_player_key).with(stat_data[:player_key])
     expected_params = stat_data.dup
     expected_params.delete(:player_key)
