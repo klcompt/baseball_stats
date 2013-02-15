@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe Stat do
+
+  it { should belong_to(:player) }
+
   it 'accepts intialization params' do
     stat = Stat.new(player_id: 'compton01', year: 2010, team_id: 'Cardinals', 
                   game: 12, at_bats: 32, runs: 4, hits: 23, doubles: 3, triples: 10, 
