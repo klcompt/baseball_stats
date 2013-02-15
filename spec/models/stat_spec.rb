@@ -5,11 +5,11 @@ describe Stat do
   it { should belong_to(:player) }
 
   it 'accepts intialization params' do
-    stat = Stat.new(player_id: 'compton01', year: 2010, team_id: 'Cardinals', 
+    stat = Stat.new(player_id: 123, year: 2010, team_id: 'Cardinals', 
                   game: 12, at_bats: 32, runs: 4, hits: 23, doubles: 3, triples: 10, 
                   home_runs: 1, runs_batted_in: 8, stolen_bases: 3, caught_stealing: 2)
 
-    stat.player_id.should == 'compton01'
+    stat.player_id.should == 123
     stat.year.should == 2010
     stat.team_id.should == 'Cardinals'
     stat.game.should == 12 

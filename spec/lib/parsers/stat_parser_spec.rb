@@ -9,7 +9,7 @@ describe 'StatParser' do
     parser = StatParser.new(io)
     stat_hash = parser.parse
 
-    stat_hash[0][:player_id].should == 'aardsda01'
+    stat_hash[0][:player_key].should == 'aardsda01'
     stat_hash[0][:year].should == '2012' 
     stat_hash[0][:team_id].should == 'NYA'
     stat_hash[0][:game].should == '1'
@@ -23,7 +23,7 @@ describe 'StatParser' do
     stat_hash[0][:stolen_bases].should be_nil
     stat_hash[0][:caught_stealing].should be_nil 
 
-    stat_hash[1][:player_id].should == 'aardsda01'
+    stat_hash[1][:player_key].should == 'aardsda01'
     stat_hash[1][:year].should == '2008' 
     stat_hash[1][:team_id].should == 'BOS'
     stat_hash[1][:game].should == '47'

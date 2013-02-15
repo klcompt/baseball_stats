@@ -15,7 +15,7 @@ class StatParser
   def parse
     data = CSV.parse(@input_data)
     data.shift   # remove header row
-    headers = [:player_id, :year, :team_id, :game, :at_bats, :runs, :hits, :doubles, :triples, :home_runs, :runs_batted_in, :stolen_bases, :caught_stealing]
+    headers = [:player_key, :year, :team_id, :game, :at_bats, :runs, :hits, :doubles, :triples, :home_runs, :runs_batted_in, :stolen_bases, :caught_stealing]
     data.map {|row| Hash[ *(headers.zip(row).flatten) ] }
   end
 

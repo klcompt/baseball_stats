@@ -13,7 +13,7 @@ class PlayerParser
   def parse
     data = CSV.parse(@input_data)
     data.shift   # remove header row
-    headers = [:player_id, :birth_year, :first_name, :last_name]
+    headers = [:player_key, :birth_year, :first_name, :last_name]
     data.map {|row| Hash[ *(headers.zip(row).flatten) ] }
   end
 

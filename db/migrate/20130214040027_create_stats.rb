@@ -2,7 +2,7 @@ class CreateStats < ActiveRecord::Migration
 
   def change
     create_table :stats do |t|
-      t.string :player_id
+      t.integer :player_id
       t.integer :year
       t.string :team_id
       t.integer :game, :default => 0

@@ -9,12 +9,12 @@ describe 'PlayerParser' do
     parser = PlayerParser.new(io)
     player_hash = parser.parse
 
-    player_hash[0][:player_id].should == 'aaronha01'
+    player_hash[0][:player_key].should == 'aaronha01'
     player_hash[0][:birth_year].should == '1934' 
     player_hash[0][:first_name].should == 'Hank'
     player_hash[0][:last_name].should == 'Aaron'
 
-    player_hash[1][:player_id].should == 'baronto01'
+    player_hash[1][:player_key].should == 'baronto01'
     player_hash[1][:birth_year].should == '1939'
     player_hash[1][:first_name].should == 'Tommie'
     player_hash[1][:last_name].should == 'Baron'

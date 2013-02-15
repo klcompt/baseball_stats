@@ -14,14 +14,14 @@
 ActiveRecord::Schema.define(:version => 20130214040027) do
 
   create_table "players", :force => true do |t|
-    t.string  "player_id"
+    t.string  "player_key"
     t.integer "birth_year"
     t.string  "last_name"
     t.string  "first_name"
   end
 
   create_table "stats", :force => true do |t|
-    t.string  "player_id"
+    t.integer "player_id"
     t.integer "year"
     t.string  "team_id"
     t.integer "game",            :default => 0
