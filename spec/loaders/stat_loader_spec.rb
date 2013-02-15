@@ -9,6 +9,7 @@ describe 'StatLoader' do
       at_bats: '6', runs: '5', hits: '3', doubles: nil, triples: '1', home_runs: '0',
       runs_batted_in: '9', stolen_bases: '8', caught_stealing: '1'}
 
+    Stat.should_receive(:destroy_all)
     Stat.should_receive(:create).with(stat_data)
 
     loader.load([stat_data])
