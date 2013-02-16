@@ -40,6 +40,7 @@ class Stats < Thor
     most_improved_detail = Player.most_improved_batting_average(2009, 2010, 200) 
     puts "\timprovement: #{ most_improved_detail[:improvement] } batting_average: #{ most_improved_detail[:average] } player: #{ most_improved_detail[:player].name }"
 
+
     # 2) Slugging percentage for all players on the Oakland A's (teamID = OAK) in 2007. 
     puts "Slugging percentages for all Oakland A's player in 2007:"
     team_stats = Stat.for_team_and_year('OAK', 2007)
@@ -47,7 +48,24 @@ class Stats < Thor
       puts "\tslugging percentage: #{ item.slugging_percentage } - player: #{ item.player.name }"
     end
 
+
     # 3) Using the fantasy scoring below, identify the top 5 most improved fantasy players from 2011 to 2012.  Only include players with at least 500 at-bats.  The most improved players are those with the largest gains between 2011 fantasy points and 2012 fantasy points.
+    puts "Top 5 most improved fantasy players from 2011 to 2012 with at least 500 at-bats:"
+
+    formula = options[:fantasy_points] || { home_run_pts: 4, rbi_pts: 1, stolen_bases_pts: 1, caught_stealing_pts: 1 }
+    puts "\tUsing formula #{ formula };"
+
+    players = Player.for_year(2011)
+    players = players.select do |player|
+      player.has_min_at_bats?(2011, 500) && player.has_min_at_bats?(2012, 500)
+    end
+    most_improved = players.map do |p| 
+      {improvement: ( p.fantasy_points(2012, formula) - p.fantasy_points(2011, formula) ), player: p} 
+    end.sort_by {|data| data[:improvement] }.reverse.take(5)
+    most_improved.each do |data|
+      puts "\timprovement: #{ data[:improvement] } - player: #{ data[:player].name }"
+    end
+
     # 4) Who won the triple crown winner in 2011 and 2012.  If no one won the crown, output "(No winner)"
 
   end

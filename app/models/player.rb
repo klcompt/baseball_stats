@@ -32,6 +32,10 @@ class Player < ActiveRecord::Base
     for_year(year1) & for_year(year2)
   end
 
+  def fantasy_points(year, formula)
+    stats.for_year(year).fantasy_points(formula)
+  end
+
   def name
     "#{last_name}, #{first_name}"
   end
