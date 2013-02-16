@@ -8,16 +8,16 @@ class Stats < Thor
 
   desc "all", "produces reults for Most improved batting average, Slugging percentages, top 5 most improved fantasy players, triple crown winner"
 
-  method_options :reload => :boolean, :player_file => :string, :stats_file => :string, :fantasy_points => :hash
-  def all
+  method_options :reload => :boolean, :player_file => :string, :stats_file => :string
+  def all(home_run_pts = nil, rbi_pts = nil, stolen_bases_pts = nil, caught_stealing_pts = nil )
+
     puts "Computing all 4 stat categories" 
 
     if options[:reload]
       player_file = options[:player_file] || "default_player_file.csv"
       stats_file = options[:stats_file] || "default_stats_file.csv"
-      fantasy_file = options[:fantasy_file] || { home_run_pts: 4, rbi_points: 1, stolen_bases_pts: 1, caught_stealing_pts: 1 } 
 
-      puts "Using player file: #{player_file}; stats file: #{stats_file}, fantasy point values: #{fantasy_file}"
+      puts "Using player file: #{player_file}; stats file: #{stats_file}"
 
 
       puts "initializing player data"
@@ -52,7 +52,11 @@ class Stats < Thor
     # 3) Using the fantasy scoring below, identify the top 5 most improved fantasy players from 2011 to 2012.  Only include players with at least 500 at-bats.  The most improved players are those with the largest gains between 2011 fantasy points and 2012 fantasy points.
     puts "Top 5 most improved fantasy players from 2011 to 2012 with at least 500 at-bats:"
 
-    formula = options[:fantasy_points] || { home_run_pts: 4, rbi_pts: 1, stolen_bases_pts: 1, caught_stealing_pts: 1 }
+    if home_run_pts && rbi_pts && stolen_bases_pts && caught_stealing_pts 
+      formula = { home_run_pts: home_run_pts.to_i, rbi_pts: rbi_pts.to_i, stolen_bases_pts: stolen_bases_pts.to_i, caught_stealing_pts: caught_stealing_pts.to_i }
+    else
+      formula = { home_run_pts: 4, rbi_pts: 1, stolen_bases_pts: 1, caught_stealing_pts: 1 }
+    end
     puts "\tUsing formula #{ formula };"
 
     players = Player.for_year(2011)
@@ -67,6 +71,19 @@ class Stats < Thor
     end
 
     # 4) Who won the triple crown winner in 2011 and 2012.  If no one won the crown, output "(No winner)"
+    puts "Triple crown winner – The player that had the highest batting average AND the most home runs AND the most RBI. WITH NO MIN AT BATS"
+    player = Player.triple_crown_winner(2011)
+    puts "\tWinner for 2011 - #{ player.nil? ? "(No winner)" : player.name }"
+
+    player = Player.triple_crown_winner(2012)
+    puts "\tWinner for 2012 - #{ player.nil? ? "(No winner)" : player.name }"
+
+    puts "Triple crown winner – The player that had the highest batting average AND the most home runs AND the most RBI. WITH 500 MIN AT BATS"
+    player = Player.triple_crown_winner(2011, 500)
+    puts "\tWinner for 2011 - #{ player.nil? ? "(No winner)" : player.name }"
+
+    player = Player.triple_crown_winner(2012, 500)
+    puts "\tWinner for 2012 - #{ player.nil? ? "(No winner)" : player.name }"
 
   end
 end
