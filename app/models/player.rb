@@ -1,16 +1,15 @@
 class Player < ActiveRecord::Base
   has_many :stats
 
-  scope :ordered_by_player_key, order( :player_key )
-
   scope :for_year, lambda { |year| select('distinct players.*').joins(:stats).merge( Stat.for_year(year) ) }
 
-  def self.most_improved_batting_average(from_year, to_year, min_at_bats)
-    players = find_all_that_played_both_years(from_year, to_year)
+
+  def self.most_improved_batting_average(year1, year2, min_at_bats)
+    players = find_all_that_played_both_years(year1, year2)
 
     players = players.select do |player| 
-      player.has_min_at_bats?(from_year, min_at_bats) && 
-        player.has_min_at_bats?(to_year, min_at_bats)
+      player.has_min_at_bats?(year1, min_at_bats) && 
+        player.has_min_at_bats?(year2, min_at_bats)
     end
 
     most_improved_player = nil
@@ -18,13 +17,11 @@ class Player < ActiveRecord::Base
     most_improvement = 0.0
 
     players.each do |player|
-      avg_year1 = player.batting_avg(from_year)
-      avg_year2 = player.batting_avg(to_year)
-      improvement = player.batting_avg_improvement(from_year, to_year)
+      improvement = player.batting_avg_improvement(year1, year2)
 
       if most_improvement < improvement
         most_improvement = improvement
-        most_improved_average = avg_year2
+        most_improved_average = player.batting_avg(year2)
         most_improved_player = player
       end
     end
@@ -50,7 +47,7 @@ class Player < ActiveRecord::Base
   end
 
   def hits(year)
-    stats.for_year(year).sum(:hits)
+    sum_stat(year, :hits)
   end
 
   def has_min_at_bats?(year, min)
@@ -58,7 +55,11 @@ class Player < ActiveRecord::Base
   end
 
   def at_bat_count(year)
-    stats.for_year(year).sum(:at_bats)
+    sum_stat(year, :at_bats)
+  end
+
+  def sum_stat(year, field)
+    stats.for_year(year).sum(field)
   end
 
 end
