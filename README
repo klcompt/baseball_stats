@@ -1,0 +1,10 @@
+Baseball statistics 
+
+
+To run:
+
+  clone
+  bundle install
+  bin/thor stats:all --reload  (or if you alreay have data loaded bin/thor stats:all)
+
+More details to follow.
