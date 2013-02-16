@@ -36,14 +36,16 @@ class Stats < Thor
     end
 
     # 1) Most improved batting average( hits / at-bats) from 2009 to 2010.  Only include players with at least 200 at-bats.
-    puts "Most improved batting average details: #{ Player.most_improved_batting_average(2009, 2010, 200) }"
+    puts "Most improved batting average details (from 2009 to 2010 with min at_bats of 200) :"
+    most_improved_detail = Player.most_improved_batting_average(2009, 2010, 200) 
+    puts "\timprovement: #{ most_improved_detail[:improvement] } batting_average: #{ most_improved_detail[:average] } player: #{ most_improved_detail[:player].name }"
 
     # 2) Slugging percentage for all players on the Oakland A's (teamID = OAK) in 2007. 
-    #puts "Slugging percentages for all Oakland A's player in 2007:"
-    #slugging_percentage_data = Player.slugging_percentages('OAK', 2007)
-    #slugging_percentage_data.each do |percentage_data|
-    #  puts percentage_data
-    #end
+    puts "Slugging percentages for all Oakland A's player in 2007:"
+    team_stats = Stat.for_team_and_year('OAK', 2007)
+    team_stats.each do |item|
+      puts "\tslugging percentage: #{ item.slugging_percentage } - player: #{ item.player.name }"
+    end
 
     # 3) Using the fantasy scoring below, identify the top 5 most improved fantasy players from 2011 to 2012.  Only include players with at least 500 at-bats.  The most improved players are those with the largest gains between 2011 fantasy points and 2012 fantasy points.
     # 4) Who won the triple crown winner in 2011 and 2012.  If no one won the crown, output "(No winner)"

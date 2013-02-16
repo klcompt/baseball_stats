@@ -23,4 +23,21 @@ describe Stat do
     stat.stolen_bases.should == 3
     stat.caught_stealing.should == 2
   end
+
+  describe '#slugging_percentage' do
+    subject { Stat.new(player_id: 123, year: 2010, team_id: 'Cardinals', 
+                  game: 12, at_bats: 32, runs: 4, hits: 23, doubles: 3, triples: 10, 
+                  home_runs: 1, runs_batted_in: 8, stolen_bases: 3, caught_stealing: 2) }
+
+
+    it 'computes and returns value' do
+      subject.slugging_percentage.should == 1.53125
+    end
+
+    it 'handles zero at_bats correctly' do
+      subject.at_bats = 0
+
+      subject.slugging_percentage.should == 0.0
+    end
+  end
 end

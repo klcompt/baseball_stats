@@ -3,7 +3,6 @@ class Player < ActiveRecord::Base
 
   scope :for_year, lambda { |year| select('distinct players.*').joins(:stats).merge( Stat.for_year(year) ) }
 
-
   def self.most_improved_batting_average(year1, year2, min_at_bats)
     players = find_all_that_played_both_years(year1, year2)
 
@@ -31,6 +30,10 @@ class Player < ActiveRecord::Base
 
   def self.find_all_that_played_both_years(year1, year2)
     for_year(year1) & for_year(year2)
+  end
+
+  def name
+    "#{last_name}, #{first_name}"
   end
 
   def batting_avg_improvement(year1, year2)
