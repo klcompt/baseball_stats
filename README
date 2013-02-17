@@ -5,6 +5,22 @@ To run:
 
   clone
   bundle install
-  bin/thor stats:all --reload  (or if you alreay have data loaded bin/thor stats:all)
+  bin/rake db:migrate
+  bin/thor stats:all --reload  (or bin/thor stats:all for subsequent runs)
 
-More details to follow.
+
+To run tests:
+
+  bin/rake db:test:prepare  (if necessary)
+  bin/rspec
+
+
+Command line interface:
+
+  if you want to reload using different files than the default player and stat files:
+
+     bin/thor stats:all --reload --player_file {path_to_file} --stats_file {path_to_file}
+
+  if you want to change the fantasy points formula
+
+    bin/thor stats:all {home_run_pts_value} {rbi_pts_value} {stolen_bases_pts_value} {caught_stealing_pts_value}
