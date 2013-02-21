@@ -85,5 +85,13 @@ class Stats < Thor
     player = Player.triple_crown_winner(2012, 500)
     puts "\tWinner for 2012 - #{ player.nil? ? "(No winner)" : player.name }"
 
+    puts "Triple crown winner – The player that had the highest batting average AND the most home runs AND the most RBI. WITH 500 MIN AT BATS AND NOT NAMED 'Posey' :-) "
+
+    player = Player.triple_crown_winner(2011, 500, 'Posey')
+    puts "\tWinner for 2011 - #{ player.nil? ? "(No winner)" : player.name }"
+
+    player = Player.triple_crown_winner(2012, 500, 'Posey')
+    puts "\tWinner for 2012 - #{ player.nil? ? "(No winner)" : player.name }"
+
   end
 end
