@@ -82,6 +82,52 @@ describe Player do
     end
   end
 
+  describe 'Player.triple_crown_winner' do
+    let(:year) { 1997 }
+    let(:min_at_bats) { 500 }
+    let(:player_too_few_at_bats) { mock('PlayerTooFew', :has_min_at_bats? => false) }
+    let(:player_meets_min) { mock('PlayerMeetsMin', :has_min_at_bats? => true) }
+
+
+    before(:each) do
+      Player.stub(:for_year).and_return( [ player_too_few_at_bats, player_meets_min ] )
+      Player.stub(:players_with_highest_batting_avg).and_return([])
+      Player.stub(:players_that_have_most_home_runs).and_return([])
+      Player.stub(:players_that_have_most_rbis).and_return([])
+    end
+
+    it 'should get players for given year' do
+      Player.should_receive(:for_year).with(year).and_return( [ player_too_few_at_bats, player_meets_min ] )
+
+      Player.triple_crown_winner(year, min_at_bats)
+    end
+
+    it 'should filter for those that meet min_at_bats' do
+      player_too_few_at_bats.should_receive(:has_min_at_bats?).with(year, min_at_bats)
+      player_meets_min.should_receive(:has_min_at_bats?).with(year, min_at_bats)
+
+      Player.triple_crown_winner(year, min_at_bats)
+    end
+
+    it 'should call method to get players with highest batting avg' do
+      Player.should_receive(:players_with_highest_batting_avg).with([player_meets_min], year)
+
+      Player.triple_crown_winner(year, min_at_bats)
+    end
+
+    it 'should call method to get players with most home runs' do
+      Player.should_receive(:players_that_have_most_home_runs).with([player_meets_min], year)
+
+      Player.triple_crown_winner(year, min_at_bats)
+    end
+
+    it 'should call method to get players with most rbis' do
+      Player.should_receive(:players_that_have_most_rbis).with([player_meets_min], year)
+
+      Player.triple_crown_winner(year, min_at_bats)
+    end
+  end
+
 
   private
 
