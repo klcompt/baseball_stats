@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130214040027) do
+ActiveRecord::Schema.define(:version => 20130223022913) do
 
   create_table "players", :force => true do |t|
     t.string  "player_key"
@@ -35,5 +35,9 @@ ActiveRecord::Schema.define(:version => 20130214040027) do
     t.integer "stolen_bases",    :default => 0
     t.integer "caught_stealing", :default => 0
   end
+
+  add_index "stats", ["player_id"], :name => "index_stats_on_player_id"
+  add_index "stats", ["team_id"], :name => "index_stats_on_team_id"
+  add_index "stats", ["year"], :name => "index_stats_on_year"
 
 end
